@@ -47,4 +47,9 @@ public class ProfileController {
     public ResponseEntity<Void> updateProfile(@RequestBody Profile profile) {
         return profileService.updateProfile(profile);
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test from profileservice";
+    }
 }

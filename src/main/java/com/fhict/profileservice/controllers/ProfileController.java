@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/profile")
+@RequestMapping("/api/v1/profile")
 public class ProfileController {
     private final ProfileService profileService;
     private final RabbitTemplate rabbitTemplate;

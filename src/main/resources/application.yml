@@ -1,0 +1,8 @@
+auth0:
+  audience: ProfileService
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-f32d4z1k.us.auth0.com/

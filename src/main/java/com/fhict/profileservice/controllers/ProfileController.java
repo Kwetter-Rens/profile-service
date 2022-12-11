@@ -28,6 +28,7 @@ public class ProfileController {
 
     @GetMapping("/{username}")
     public ResponseEntity<ProfileWithFollowing> getProfileByUsername(@PathVariable String username) {
+        System.out.println("retreiving user:" + username);
         Profile profile = profileService.getProfileByUsername(username);
         if(profile == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

@@ -19,9 +19,9 @@ public class ProfileService {
         this.profileRepo = profileRepo;
     }
 
-    public Profile getProfileByUsername(String username) {
-        System.out.println("getting profile for " + username);
-        return profileRepo.findByUsername(username);
+    public Profile getProfileByAuth0Id(String auth0Id) {
+        System.out.println("getting profile for " + auth0Id);
+        return profileRepo.findByUserId(auth0Id);
     }
 
     public ResponseEntity<Profile> createProfile(Profile profile) {
@@ -44,6 +44,22 @@ public class ProfileService {
         profile.setUserPicture(_profile.getUserPicture());
 
         try {
+            this.profileRepo.save(profile);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    public ResponseEntity<Void> deleteProfile(String auth0userId) {
+        try {
+            Profile profile = this.profileRepo.findByUserId(auth0userId);
+            profile.setUserPicture(null);
+            profile.setUsername("DeletedUser");
+            profile.setUserEmail(null);
+            profile.setBio(null);
+            profile.setDateOfBirth(null);
             this.profileRepo.save(profile);
             return new ResponseEntity<>(HttpStatus.OK);
         }

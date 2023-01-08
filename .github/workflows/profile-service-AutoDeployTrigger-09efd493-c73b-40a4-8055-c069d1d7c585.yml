@@ -30,4 +30,4 @@ jobs:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
             az containerapp registry set -n profile-service -g kwetter-resource-group --server docker.io --username  ${{ secrets.PROFILESERVICE_REGISTRY_USERNAME }} --password ${{ secrets.PROFILESERVICE_REGISTRY_PASSWORD }}
-            az containerapp update -n profile-service -g kwetter-resource-group --image renskloosterman/profile-service:${{ github.sha }}
+            az containerapp update -n profile-service -g kwetter-resource-group --image renskloosterman/profile-service:latest

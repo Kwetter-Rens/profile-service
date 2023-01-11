@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/profile")
+@CrossOrigin(origins = "*")
 public class ProfileController {
     private final ProfileService profileService;
     private final RabbitTemplate rabbitTemplate;
@@ -31,10 +32,11 @@ public class ProfileController {
         System.out.println("retreiving user:" + Auth0id);
         Profile profile = profileService.getProfileByAuth0Id(Auth0id);
         if(profile == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.OK);
         }
         List<String> followingUserIds = (List<String>) rabbitTemplate.convertSendAndReceive("kwetter", "following", Auth0id);
         ProfileWithFollowing profileWithFollowing = new ProfileWithFollowing(profile, followingUserIds);
+        System.out.println("returning user:" + profileWithFollowing);
         return new ResponseEntity<>(profileWithFollowing, HttpStatus.OK);
     }
 

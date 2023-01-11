@@ -1,0 +1,33 @@
+name: Trigger auto deployment for profile-service
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/profile-service-AutoDeployTrigger-09efd493-c73b-40a4-8055-c069d1d7c585.yml'
+
+  # Allow mannually trigger 
+  workflow_dispatch:      
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.PROFILESERVICE_AZURE_CREDENTIALS }}
+
+
+      - name: Deploy to containerapp
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            az containerapp registry set -n profile-service -g kwetter-resource-group --server docker.io --username  ${{ secrets.PROFILESERVICE_REGISTRY_USERNAME }} --password ${{ secrets.PROFILESERVICE_REGISTRY_PASSWORD }}
+            az containerapp update -n profile-service -g kwetter-resource-group --image renskloosterman/profile-service:latest
